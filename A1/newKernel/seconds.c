@@ -5,7 +5,7 @@
  * Operating Systems SFWRENG 3SH3
  * 
  * Stanislav Serbezov
- * Add ur name here
+ * Zifan SI
  *
  * Output of lsb_release -a
  * No LSB modules are available.
