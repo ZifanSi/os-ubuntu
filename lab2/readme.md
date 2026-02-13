@@ -1,5 +1,5 @@
 part 1:
-deposit=100, withdraw=50.
+deposit save = 100, withdraw=50.
 
 gcc -Wall -Wextra -pthread PLmutex.c -o PLmutex
 ./PLmutex 100 50
@@ -39,6 +39,12 @@ Deposit thread
 
 
 part 2:
+Withdraw only if amount > 0 (otherwise the withdraw thread must wait).
+
+Deposit only if amount < 400 (otherwise the deposit thread must wait).
+Use mutex + 2 semaphores, with 10 threads total (7 deposit, 3 withdraw).
+
+With input 100, final must end at Final amount = 400.
 
 gcc -Wall -Wextra -pthread PLsem.c -o PLsem
 ./PLsem 100
