@@ -1,4 +1,5 @@
-part 1:
+
+art 1:
 deposit save = 100, withdraw=50.
 
 gcc -Wall -Wextra -pthread PLmutex.c -o PLmutex
