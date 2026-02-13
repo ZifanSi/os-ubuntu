@@ -1,41 +1,41 @@
 part 1:
 
-Main
-
-Read deposit, withdraw from CLI.
-
-Init mutex.
-
-Create 3 withdraw threads + 3 deposit threads.
-
-join all 6 threads.
-
-Print Final amount.
-
-Withdraw thread
-
-lock(mutex)
-
-amount -= withdraw
-
-print amount
-
-unlock(mutex)
-
-Deposit thread
-
-lock(mutex)
-
-amount += deposit
-
-print amount
-
-unlock(mutex)
-
-
 gcc -Wall -Wextra -pthread PLmutex.c -o PLmutex
 ./PLmutex 100 50
 
+Part I (PLmutex) — flow (short)
+
+Main
+
+1. Read deposit, withdraw from CLI.
+
+2. Init mutex.
+
+3. Create 3 withdraw threads + 3 deposit threads.
+
+4. join all 6 threads.
+
+5. Print Final amount.
+
+Withdraw thread
+
+1. lock(mutex)
+
+2. amount -= withdraw
+
+3. print amount
+
+4. unlock(mutex)
+
+Deposit thread
+
+1. lock(mutex)
+
+2. amount += deposit
+
+3. print amount
+
+4. unlock(mutex)
 
 gcc -Wall -Wextra -pthread PLsem.c -o PLsem
 ./PLsem 100
