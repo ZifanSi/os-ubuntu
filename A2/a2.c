@@ -12,23 +12,53 @@ Run:
 #include <stdlib.h>
 #include <unistd.h>
 
+int waiting_students = 0;
+
+pthread_mutex_t mutex;
+sem_t students_sem;
+sem_t ta_sem;
+
 void *ta_thread(void *arg) {
-    // TODO: implement TA logic here
+    while (1) {
+        printf("TA is sleeping...\n");
+        sem_wait(&students_sem);
+
+        pthread_mutex_lock(&mutex);
+        waiting_students--;
+        printf("TA wakes up. Waiting students = %d\n", waiting_students);
+        pthread_mutex_unlock(&mutex);
+
+        sem_post(&ta_sem);
+
+        printf("TA is helping a student...\n");
+        sleep(1);
+        printf("TA finished helping a student.\n");
+    }
+
+    return NULL;
+}
+
+void *student_thread(void *arg) {
     return NULL;
 }
 
 int main(void) {
     pthread_t ta;
 
+    pthread_mutex_init(&mutex, NULL);
+    sem_init(&students_sem, 0, 0);
+    sem_init(&ta_sem, 0, 0);
+
     if (pthread_create(&ta, NULL, ta_thread, NULL) != 0) {
         perror("pthread_create");
         return 1;
     }
 
-    if (pthread_join(ta, NULL) != 0) {
-        perror("pthread_join");
-        return 1;
-    }
+    pthread_join(ta, NULL);
+
+    sem_destroy(&students_sem);
+    sem_destroy(&ta_sem);
+    pthread_mutex_destroy(&mutex);
 
     return 0;
 }
