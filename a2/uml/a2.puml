@@ -1,0 +1,69 @@
+@startuml
+title Sleeping TA - Activity Diagram
+
+start
+
+partition "Main" {
+  :a1. Read number of students from command line;
+  :a2. Initialize shared variables;
+  :a3. Initialize mutex and semaphores;
+  :a4. Allocate arrays for threads, ids, semaphores;
+
+  :b1. Create 1 TA thread;
+  :b2. Create n student threads;
+  :b3. Give each student a unique id;
+}
+
+fork
+
+partition "TA Thread" {
+  while (program running?)
+    :Check waiting students;
+
+    if (students waiting?) then (yes)
+      :d1. Lock mutex;
+      :Take next student from queue;
+      :Unlock mutex;
+
+      :d3. student_called[i];
+      :c6. Help one student;
+      :d4. student_done[i];
+    else (no)
+      :c7. Sleep;
+      :d2. Wait on students_waiting;
+    endif
+  endwhile
+}
+
+fork again
+
+partition "Student Thread(s)" {
+  while (student active?)
+    :c1. Program for random time;
+    :c2. Ask TA for help;
+
+    :d1. Lock mutex;
+    if (chair available?) then (yes)
+      :c3. Sit in waiting chair;
+      if (TA sleeping?) then (yes)
+        :c5. Wake TA;
+        :d2. Post students_waiting;
+      else (no)
+        :Stay in queue;
+      endif
+      :Unlock mutex;
+
+      :Wait on d3. student_called[i];
+      :Receive help;
+      :Wait on d4. student_done[i];
+    else (no)
+      :Unlock mutex;
+      :c4. Come back later;
+    endif
+  endwhile
+}
+
+end fork
+
+stop
+@enduml
