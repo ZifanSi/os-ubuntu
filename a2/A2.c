@@ -139,6 +139,7 @@ void *ta_work(void *arg) {
             chairs[next_teach] = -1;
             next_teach = (next_teach + 1) % CHAIRS;
             waiting--;
+            ta_busy = 1;   /* FIX: mark TA busy before helping a waiting student */
 
             printf("TA calls student %d. Waiting students left: %d\n", id, waiting);
         }
