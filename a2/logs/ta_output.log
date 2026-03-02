@@ -1,0 +1,319 @@
+Student 3 is programming for 2 seconds.
+TA is sleeping.
+Student 4 is programming for 4 seconds.
+Student 1 is programming for 5 seconds.
+Student 5 is programming for 1 seconds.
+Student 2 is programming for 4 seconds.
+Student 5 wakes up the TA and gets immediate help.
+TA starts helping student 5 immediately.
+TA is helping student 5 for 2 seconds.
+Student 5 goes into the office for help.
+Student 3 sits in chair 0.
+Student 3 is waiting. Total waiting: 1
+TA finished helping student 5.
+TA calls student 3. Waiting students left: 0
+TA is helping student 3 for 1 seconds.
+Student 3 goes into the office for help.
+Student 5 leaves the office.
+Student 5 is programming for 2 seconds.
+Student 4 finds TA available and gets immediate help.
+Student 2 sits in chair 1.
+Student 2 is waiting. Total waiting: 1
+TA finished helping student 3.
+TA starts helping student 4 immediately.
+Student 4 goes into the office for help.
+TA is helping student 4 for 3 seconds.
+Student 3 leaves the office.
+Student 3 is programming for 5 seconds.
+Student 1 sits in chair 2.
+Student 1 is waiting. Total waiting: 2
+Student 5 sits in chair 0.
+Student 5 is waiting. Total waiting: 3
+TA finished helping student 4.
+TA calls student 2. Waiting students left: 2
+TA is helping student 2 for 2 seconds.
+Student 4 leaves the office.
+Student 4 is programming for 2 seconds.
+Student 2 goes into the office for help.
+Student 3 sits in chair 1.
+Student 3 is waiting. Total waiting: 3
+TA finished helping student 2.
+Student 4 found no empty chair and will come back later.
+Student 4 is programming for 5 seconds.
+TA calls student 1. Waiting students left: 2
+TA is helping student 1 for 1 seconds.
+Student 1 goes into the office for help.
+Student 2 leaves the office.
+Student 2 is programming for 2 seconds.
+TA finished helping student 1.
+TA calls student 5. Waiting students left: 1
+TA is helping student 5 for 3 seconds.
+Student 1 leaves the office.
+Student 1 is programming for 2 seconds.
+Student 5 goes into the office for help.
+Student 2 sits in chair 2.
+Student 2 is waiting. Total waiting: 2
+Student 1 sits in chair 0.
+Student 1 is waiting. Total waiting: 3
+TA finished helping student 5.
+TA calls student 3. Waiting students left: 2
+TA is helping student 3 for 1 seconds.
+Student 3 goes into the office for help.
+Student 5 leaves the office.
+Student 5 is programming for 1 seconds.
+Student 4 sits in chair 1.
+Student 4 is waiting. Total waiting: 3
+TA finished helping student 3.
+Student 3 leaves the office.
+Student 3 is programming for 5 seconds.
+Student 5 found no empty chair and will come back later.
+Student 5 is programming for 3 seconds.
+TA calls student 2. Waiting students left: 2
+TA is helping student 2 for 3 seconds.
+Student 2 goes into the office for help.
+Student 5 sits in chair 2.
+Student 5 is waiting. Total waiting: 3
+TA finished helping student 2.
+TA calls student 1. Waiting students left: 2
+TA is helping student 1 for 1 seconds.
+Student 2 leaves the office.
+Student 2 is programming for 3 seconds.
+Student 1 goes into the office for help.
+TA finished helping student 1.
+TA calls student 4. Waiting students left: 1
+Student 4 goes into the office for help.
+TA is helping student 4 for 3 seconds.
+Student 1 leaves the office.
+Student 1 is programming for 5 seconds.
+Student 3 sits in chair 0.
+Student 3 is waiting. Total waiting: 2
+Student 2 sits in chair 1.
+Student 2 is waiting. Total waiting: 3
+TA finished helping student 4.
+Student 4 leaves the office.
+TA calls student 5. Waiting students left: 2
+TA is helping student 5 for 2 seconds.
+Student 4 is programming for 5 seconds.
+Student 5 goes into the office for help.
+Student 1 sits in chair 2.
+Student 1 is waiting. Total waiting: 3
+TA finished helping student 5.
+TA calls student 3. Waiting students left: 2
+Student 5 leaves the office.
+Student 5 is programming for 1 seconds.
+TA is helping student 3 for 3 seconds.
+Student 3 goes into the office for help.
+Student 5 sits in chair 0.
+Student 5 is waiting. Total waiting: 3
+Student 4 found no empty chair and will come back later.
+Student 4 is programming for 1 seconds.
+TA finished helping student 3.
+TA calls student 2. Waiting students left: 2
+TA is helping student 2 for 1 seconds.
+Student 2 goes into the office for help.
+Student 3 leaves the office.
+Student 3 is programming for 3 seconds.
+Student 4 sits in chair 1.
+Student 4 is waiting. Total waiting: 3
+TA finished helping student 2.
+TA calls student 1. Waiting students left: 2
+Student 2 leaves the office.
+Student 2 is programming for 3 seconds.
+TA is helping student 1 for 3 seconds.
+Student 1 goes into the office for help.
+Student 3 sits in chair 2.
+Student 3 is waiting. Total waiting: 3
+TA finished helping student 1.
+TA calls student 5. Waiting students left: 2
+TA is helping student 5 for 2 seconds.
+Student 5 goes into the office for help.
+Student 2 sits in chair 0.
+Student 2 is waiting. Total waiting: 3
+Student 1 leaves the office.
+Student 1 is programming for 5 seconds.
+TA finished helping student 5.
+Student 5 leaves the office.
+Student 5 is programming for 4 seconds.
+TA calls student 4. Waiting students left: 2
+TA is helping student 4 for 3 seconds.
+Student 4 goes into the office for help.
+Student 1 sits in chair 1.
+Student 1 is waiting. Total waiting: 3
+TA finished helping student 4.
+TA calls student 3. Waiting students left: 2
+TA is helping student 3 for 3 seconds.
+Student 4 leaves the office.
+Student 4 is programming for 5 seconds.
+Student 3 goes into the office for help.
+Student 5 sits in chair 2.
+Student 5 is waiting. Total waiting: 3
+TA finished helping student 3.
+TA calls student 2. Waiting students left: 2
+TA is helping student 2 for 1 seconds.
+Student 3 leaves the office.
+Student 3 is programming for 3 seconds.
+Student 2 goes into the office for help.
+TA finished helping student 2.
+TA calls student 1. Waiting students left: 1
+TA is helping student 1 for 3 seconds.
+Student 2 leaves the office.
+Student 1 goes into the office for help.
+Student 2 is programming for 5 seconds.
+Student 4 sits in chair 0.
+Student 4 is waiting. Total waiting: 2
+Student 3 sits in chair 1.
+Student 3 is waiting. Total waiting: 3
+TA finished helping student 1.
+TA calls student 5. Waiting students left: 2
+TA is helping student 5 for 1 seconds.
+Student 5 goes into the office for help.
+Student 1 leaves the office.
+Student 1 is programming for 2 seconds.
+TA finished helping student 5.
+TA calls student 4. Waiting students left: 1
+Student 5 leaves the office.
+Student 5 is programming for 2 seconds.
+TA is helping student 4 for 1 seconds.
+Student 4 goes into the office for help.
+Student 1 sits in chair 2.
+Student 1 is waiting. Total waiting: 2
+Student 2 sits in chair 0.
+Student 2 is waiting. Total waiting: 3
+TA finished helping student 4.
+TA calls student 3. Waiting students left: 2
+TA is helping student 3 for 2 seconds.
+Student 4 leaves the office.
+Student 4 is programming for 4 seconds.
+Student 3 goes into the office for help.
+Student 5 sits in chair 1.
+Student 5 is waiting. Total waiting: 3
+TA finished helping student 3.
+Student 3 leaves the office.
+Student 3 is programming for 4 seconds.
+TA calls student 1. Waiting students left: 2
+TA is helping student 1 for 3 seconds.
+Student 1 goes into the office for help.
+Student 4 sits in chair 2.
+Student 4 is waiting. Total waiting: 3
+TA finished helping student 1.
+Student 1 leaves the office.
+Student 1 is programming for 4 seconds.
+TA calls student 2. Waiting students left: 2
+TA is helping student 2 for 3 seconds.
+Student 2 goes into the office for help.
+Student 3 sits in chair 0.
+Student 3 is waiting. Total waiting: 3
+TA finished helping student 2.
+Student 2 leaves the office.
+Student 2 is programming for 4 seconds.
+TA calls student 5. Waiting students left: 2
+TA is helping student 5 for 3 seconds.
+Student 5 goes into the office for help.
+Student 1 sits in chair 1.
+Student 1 is waiting. Total waiting: 3
+TA finished helping student 5.
+TA calls student 4. Waiting students left: 2
+TA is helping student 4 for 2 seconds.
+Student 5 leaves the office.
+Student 5 is programming for 5 seconds.
+Student 4 goes into the office for help.
+Student 2 sits in chair 2.
+Student 2 is waiting. Total waiting: 3
+TA finished helping student 4.
+Student 4 leaves the office.
+Student 4 is programming for 2 seconds.
+TA calls student 3. Waiting students left: 2
+TA is helping student 3 for 2 seconds.
+Student 3 goes into the office for help.
+TA finished helping student 3.
+Student 4 sits in chair 0.
+Student 4 is waiting. Total waiting: 3
+Student 3 leaves the office.
+Student 3 is programming for 3 seconds.
+TA calls student 1. Waiting students left: 2
+TA is helping student 1 for 2 seconds.
+Student 1 goes into the office for help.
+Student 5 sits in chair 1.
+Student 5 is waiting. Total waiting: 3
+TA finished helping student 1.
+TA calls student 2. Waiting students left: 2
+Student 1 leaves the office.
+Student 1 is programming for 5 seconds.
+Student 2 goes into the office for help.
+TA is helping student 2 for 3 seconds.
+Student 3 sits in chair 2.
+Student 3 is waiting. Total waiting: 3
+TA finished helping student 2.
+TA calls student 4. Waiting students left: 2
+TA is helping student 4 for 2 seconds.
+Student 4 goes into the office for help.
+Student 2 leaves the office.
+Student 2 is programming for 5 seconds.
+Student 1 sits in chair 0.
+Student 1 is waiting. Total waiting: 3
+TA finished helping student 4.
+TA calls student 5. Waiting students left: 2
+TA is helping student 5 for 3 seconds.
+Student 4 leaves the office.
+Student 4 is programming for 4 seconds.
+Student 5 goes into the office for help.
+Student 2 sits in chair 1.
+Student 2 is waiting. Total waiting: 3
+TA finished helping student 5.
+TA calls student 3. Waiting students left: 2
+Student 5 leaves the office.
+Student 5 is programming for 3 seconds.
+Student 3 goes into the office for help.
+TA is helping student 3 for 3 seconds.
+Student 4 sits in chair 2.
+Student 4 is waiting. Total waiting: 3
+Student 5 found no empty chair and will come back later.
+Student 5 is programming for 3 seconds.
+TA finished helping student 3.
+TA calls student 1. Waiting students left: 2
+TA is helping student 1 for 2 seconds.
+Student 1 goes into the office for help.
+Student 3 leaves the office.
+Student 3 is programming for 3 seconds.
+TA finished helping student 1.
+TA calls student 2. Waiting students left: 1
+TA is helping student 2 for 2 seconds.
+Student 1 leaves the office.
+Student 1 is programming for 4 seconds.
+Student 2 goes into the office for help.
+Student 5 sits in chair 0.
+Student 5 is waiting. Total waiting: 2
+Student 3 sits in chair 1.
+Student 3 is waiting. Total waiting: 3
+TA finished helping student 2.
+TA calls student 4. Waiting students left: 2
+TA is helping student 4 for 3 seconds.
+Student 2 leaves the office.
+Student 2 is programming for 5 seconds.
+Student 4 goes into the office for help.
+Student 1 sits in chair 2.
+Student 1 is waiting. Total waiting: 3
+TA finished helping student 4.
+TA calls student 5. Waiting students left: 2
+TA is helping student 5 for 2 seconds.
+Student 4 leaves the office.
+Student 4 is programming for 5 seconds.
+Student 5 goes into the office for help.
+Student 2 sits in chair 0.
+Student 2 is waiting. Total waiting: 3
+TA finished helping student 5.
+TA calls student 3. Waiting students left: 2
+TA is helping student 3 for 3 seconds.
+Student 5 leaves the office.
+Student 5 is programming for 4 seconds.
+Student 3 goes into the office for help.
+Student 4 sits in chair 1.
+Student 4 is waiting. Total waiting: 3
+TA finished helping student 3.
+Student 3 leaves the office.
+Student 3 is programming for 5 seconds.
+TA calls student 1. Waiting students left: 2
+TA is helping student 1 for 2 seconds.
+Student 1 goes into the office for help.
+Student 5 sits in chair 2.
+Student 5 is waiting. Total waiting: 3

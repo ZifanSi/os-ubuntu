@@ -49,7 +49,10 @@ int chairs[CHAIRS];
 int next_seat = 0;
 int next_teach = 0;
 int num_students = 0;
+
 int ta_sleeping = 1;
+int ta_busy = 0;
+int current_student = 0;   /* student getting immediate help */
 
 /* sync objects */
 pthread_mutex_t mutex;
@@ -90,25 +93,32 @@ void *ta_work(void *arg) {
 
     while (1) {
         pthread_mutex_lock(&mutex);
-        if (waiting == 0) {
+        if (!ta_busy && waiting == 0 && current_student == 0) {
             ta_sleeping = 1;
             printf("TA is sleeping.\n");
         }
         pthread_mutex_unlock(&mutex);
 
-        /* wait until a student arrives */
+        /* wait until some student needs help */
         sem_wait(&students_waiting);
 
         pthread_mutex_lock(&mutex);
 
         ta_sleeping = 0;
 
-        /* take next student from the waiting chairs */
-        id = chairs[next_teach];
-        next_teach = (next_teach + 1) % CHAIRS;
-        waiting--;
+        /* immediate-help student gets priority if one exists */
+        if (current_student != 0) {
+            id = current_student;
+            current_student = 0;
+            printf("TA starts helping student %d immediately.\n", id);
+        } else {
+            id = chairs[next_teach];
+            chairs[next_teach] = -1;
+            next_teach = (next_teach + 1) % CHAIRS;
+            waiting--;
 
-        printf("TA calls student %d. Waiting students left: %d\n", id, waiting);
+            printf("TA calls student %d. Waiting students left: %d\n", id, waiting);
+        }
 
         pthread_mutex_unlock(&mutex);
 
@@ -120,6 +130,10 @@ void *ta_work(void *arg) {
 
         /* tell student help is done */
         sem_post(&student_done[id - 1]);
+
+        pthread_mutex_lock(&mutex);
+        ta_busy = 0;
+        pthread_mutex_unlock(&mutex);
     }
 
     return NULL;
@@ -136,35 +150,54 @@ void *student_work(void *arg) {
         /* c2. student asks for help */
         pthread_mutex_lock(&mutex);
 
-        /* c3. if chair available, student waits */
-        if (waiting < CHAIRS) {
+        /* if TA is free and nobody is already waiting, get immediate help */
+        if (!ta_busy && waiting == 0 && current_student == 0) {
+            ta_busy = 1;
+            current_student = id;
+
+            if (ta_sleeping) {
+                printf("Student %d wakes up the TA and gets immediate help.\n", id);
+            } else {
+                printf("Student %d finds TA available and gets immediate help.\n", id);
+            }
+
+            pthread_mutex_unlock(&mutex);
+
+            /* notify TA */
+            sem_post(&students_waiting);
+
+            /* wait until TA calls this student */
+            sem_wait(&student_called[id - 1]);
+            printf("Student %d goes into the office for help.\n", id);
+
+            /* wait until help is finished */
+            sem_wait(&student_done[id - 1]);
+            printf("Student %d leaves the office.\n", id);
+        }
+        /* otherwise, sit in a waiting chair if available */
+        else if (waiting < CHAIRS) {
             chairs[next_seat] = id;
             printf("Student %d sits in chair %d.\n", id, next_seat);
 
             next_seat = (next_seat + 1) % CHAIRS;
             waiting++;
 
-            /* c5. if TA is sleeping, wake TA */
-            if (ta_sleeping) {
-                printf("Student %d wakes up the TA.\n", id);
-            } else {
-                printf("Student %d is waiting. Total waiting: %d\n", id, waiting);
-            }
+            printf("Student %d is waiting. Total waiting: %d\n", id, waiting);
 
             pthread_mutex_unlock(&mutex);
 
-            /* d2. wake TA / notify student is waiting */
+            /* notify TA that a student is waiting */
             sem_post(&students_waiting);
 
-            /* d3. wait until TA calls this student */
+            /* wait until TA calls this student */
             sem_wait(&student_called[id - 1]);
             printf("Student %d goes into the office for help.\n", id);
 
-            /* d4. wait until help is finished */
+            /* wait until help is finished */
             sem_wait(&student_done[id - 1]);
             printf("Student %d leaves the office.\n", id);
         } else {
-            /* c4. no chair, come back later */
+            /* no chair, come back later */
             printf("Student %d found no empty chair and will come back later.\n", id);
             pthread_mutex_unlock(&mutex);
         }
@@ -240,6 +273,8 @@ int main(int argc, char *argv[]) {
     next_seat = 0;
     next_teach = 0;
     ta_sleeping = 1;
+    ta_busy = 0;
+    current_student = 0;
 
     for (i = 0; i < CHAIRS; i++) {
         chairs[i] = -1;
