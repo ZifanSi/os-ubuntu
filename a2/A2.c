@@ -15,11 +15,9 @@ Run: ./A2 5
 
 #define CHAIRS 3
 
-/* log objects */
 FILE *log_fp = NULL;
 pthread_mutex_t log_mutex;
 
-/* log function: writes to terminal and log file */
 void log_printf(const char *fmt, ...) {
     va_list args;
 
@@ -40,10 +38,8 @@ void log_printf(const char *fmt, ...) {
     pthread_mutex_unlock(&log_mutex);
 }
 
-/* redirect all printf calls to log_printf */
 #define printf(...) log_printf(__VA_ARGS__)
 
-/* shared variables */
 int waiting = 0;
 int chairs[CHAIRS];
 int next_seat = 0;
@@ -52,32 +48,29 @@ int num_students = 0;
 
 int ta_sleeping = 1;
 int ta_busy = 0;
-int current_student = 0;   /* student getting immediate help */
+int current_student = 0;
 
-/* sync objects */
 pthread_mutex_t mutex;
 sem_t students_waiting;
 sem_t *student_called = NULL;
 sem_t *student_done = NULL;
 
-/* thread handles */
 pthread_t ta_tid;
 pthread_t *student_tids = NULL;
 int *student_ids = NULL;
 
-/* random number in [low, high] */
 int rand_range(int low, int high) {
     return low + rand() % (high - low + 1);
 }
 
-/* student programming time */
+/* c1. Student programs for random time */
 void program_time(int id) {
     int t = rand_range(1, 5);
     printf("Student %d is programming for %d seconds.\n", id, t);
     sleep(t);
 }
 
-/* TA helping time */
+/* c6. TA helps one student at a time */
 void help_time(int id) {
     int t = rand_range(1, 3);
     printf("TA is helping student %d for %d seconds.\n", id, t);
@@ -85,7 +78,6 @@ void help_time(int id) {
     printf("TA finished helping student %d.\n", id);
 }
 
-/* TA thread */
 void *ta_work(void *arg) {
     int id;
 
@@ -93,20 +85,22 @@ void *ta_work(void *arg) {
 
     while (1) {
         pthread_mutex_lock(&mutex);
+
+        /* c7. TA sleeps again if nobody is waiting */
         if (!ta_busy && waiting == 0 && current_student == 0) {
             ta_sleeping = 1;
             printf("TA is sleeping.\n");
         }
+
         pthread_mutex_unlock(&mutex);
 
-        /* wait until some student needs help */
+        /* d2. students_waiting wakes TA */
         sem_wait(&students_waiting);
 
         pthread_mutex_lock(&mutex);
-
         ta_sleeping = 0;
 
-        /* immediate-help student gets priority if one exists */
+        /* c6. TA helps one student at a time */
         if (current_student != 0) {
             id = current_student;
             current_student = 0;
@@ -122,13 +116,12 @@ void *ta_work(void *arg) {
 
         pthread_mutex_unlock(&mutex);
 
-        /* call the correct student */
+        /* d3. student_called[i] calls one student */
         sem_post(&student_called[id - 1]);
 
-        /* help that student */
         help_time(id);
 
-        /* tell student help is done */
+        /* d4. student_done[i] tells student help is done */
         sem_post(&student_done[id - 1]);
 
         pthread_mutex_lock(&mutex);
@@ -139,22 +132,22 @@ void *ta_work(void *arg) {
     return NULL;
 }
 
-/* student thread */
 void *student_work(void *arg) {
     int id = *(int *)arg;
 
     while (1) {
-        /* c1. student programs first */
+        /* c1. Student programs for random time */
         program_time(id);
 
-        /* c2. student asks for help */
+        /* c2. Student asks TA for help */
+        /* d1. Mutex protects shared data */
         pthread_mutex_lock(&mutex);
 
-        /* if TA is free and nobody is already waiting, get immediate help */
         if (!ta_busy && waiting == 0 && current_student == 0) {
             ta_busy = 1;
             current_student = id;
 
+            /* c5. If TA is sleeping, student wakes TA */
             if (ta_sleeping) {
                 printf("Student %d wakes up the TA and gets immediate help.\n", id);
             } else {
@@ -163,18 +156,18 @@ void *student_work(void *arg) {
 
             pthread_mutex_unlock(&mutex);
 
-            /* notify TA */
+            /* d2. students_waiting wakes TA */
             sem_post(&students_waiting);
 
-            /* wait until TA calls this student */
+            /* d3. student_called[i] calls one student */
             sem_wait(&student_called[id - 1]);
             printf("Student %d goes into the office for help.\n", id);
 
-            /* wait until help is finished */
+            /* d4. student_done[i] tells student help is done */
             sem_wait(&student_done[id - 1]);
             printf("Student %d leaves the office.\n", id);
         }
-        /* otherwise, sit in a waiting chair if available */
+        /* c3. If chair available, student waits */
         else if (waiting < CHAIRS) {
             chairs[next_seat] = id;
             printf("Student %d sits in chair %d.\n", id, next_seat);
@@ -186,18 +179,18 @@ void *student_work(void *arg) {
 
             pthread_mutex_unlock(&mutex);
 
-            /* notify TA that a student is waiting */
+            /* d2. students_waiting wakes TA */
             sem_post(&students_waiting);
 
-            /* wait until TA calls this student */
+            /* d3. student_called[i] calls one student */
             sem_wait(&student_called[id - 1]);
             printf("Student %d goes into the office for help.\n", id);
 
-            /* wait until help is finished */
+            /* d4. student_done[i] tells student help is done */
             sem_wait(&student_done[id - 1]);
             printf("Student %d leaves the office.\n", id);
         } else {
-            /* no chair, come back later */
+            /* c4. If no chair, student comes back later */
             printf("Student %d found no empty chair and will come back later.\n", id);
             pthread_mutex_unlock(&mutex);
         }
@@ -206,7 +199,6 @@ void *student_work(void *arg) {
     return NULL;
 }
 
-/* free memory and destroy sync objects */
 static void cleanup(void) {
     int i;
 
@@ -240,7 +232,6 @@ static void cleanup(void) {
 int main(int argc, char *argv[]) {
     int i;
 
-    /* create log folder and log file */
     mkdir("logs", 0777);
     log_fp = fopen("logs/ta_output.log", "a");
     if (log_fp == NULL) {
@@ -249,10 +240,6 @@ int main(int argc, char *argv[]) {
     }
 
     pthread_mutex_init(&log_mutex, NULL);
-
-    /* =========================
-       A. Setup
-       ========================= */
 
     /* a1. Read number of students from command line */
     if (argc != 2) {
@@ -300,15 +287,10 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    /* one called semaphore and one done semaphore per student */
     for (i = 0; i < num_students; i++) {
         sem_init(&student_called[i], 0, 0);
         sem_init(&student_done[i], 0, 0);
     }
-
-    /* =========================
-       B. Create threads
-       ========================= */
 
     /* b1. Create 1 TA thread */
     if (pthread_create(&ta_tid, NULL, ta_work, NULL) != 0) {
@@ -329,7 +311,6 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    /* this version runs forever */
     pthread_join(ta_tid, NULL);
 
     for (i = 0; i < num_students; i++) {
