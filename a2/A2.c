@@ -9,8 +9,39 @@ Run: ./A2 5
 #include <unistd.h>
 #include <pthread.h>
 #include <semaphore.h>
+#include <stdarg.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 
 #define CHAIRS 3
+
+/* log objects */
+FILE *log_fp = NULL;
+pthread_mutex_t log_mutex;
+
+/* log function: writes to terminal and log file */
+void log_printf(const char *fmt, ...) {
+    va_list args;
+
+    pthread_mutex_lock(&log_mutex);
+
+    va_start(args, fmt);
+    vprintf(fmt, args);
+    va_end(args);
+    fflush(stdout);
+
+    if (log_fp != NULL) {
+        va_start(args, fmt);
+        vfprintf(log_fp, fmt, args);
+        va_end(args);
+        fflush(log_fp);
+    }
+
+    pthread_mutex_unlock(&log_mutex);
+}
+
+/* redirect all printf calls to log_printf */
+#define printf(...) log_printf(__VA_ARGS__)
 
 /* shared variables */
 int waiting = 0;
@@ -165,10 +196,26 @@ static void cleanup(void) {
     free(student_ids);
     free(student_called);
     free(student_done);
+
+    if (log_fp != NULL) {
+        fclose(log_fp);
+    }
+
+    pthread_mutex_destroy(&log_mutex);
 }
 
 int main(int argc, char *argv[]) {
     int i;
+
+    /* create log folder and log file */
+    mkdir("logs", 0777);
+    log_fp = fopen("logs/ta_output.log", "a");
+    if (log_fp == NULL) {
+        fprintf(stderr, "Could not open log file.\n");
+        return 1;
+    }
+
+    pthread_mutex_init(&log_mutex, NULL);
 
     /* =========================
        A. Setup
