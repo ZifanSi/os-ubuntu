@@ -1,0 +1,58 @@
+@startuml
+skinparam monochrome true
+skinparam ActivityBackgroundColor white
+
+title Memory Translation Flow (per Address)
+
+start
+
+:Open files & Initialize data structures;
+
+while (Read line from addresses.txt?) is (Line exists)
+    :Parse Logical Address;
+    :Calculate **Page** (logicalAddress >> 8)
+    Calculate **Offset** (logicalAddress & 255);
+    
+    note right: Check TLB First
+    if (findInTLB(page) returns valid frame?) then (Yes: TLB Hit)
+        :frame = TLB[page].frame;
+        :Increment hits;
+        
+    else (No: TLB Miss)
+        note right: Fallback to Page Table
+        if (pageTable[page] != -1?) then (Yes: Page Table Hit)
+            :frame = pageTable[page];
+            
+        else (No: Page Fault)
+            :Increment faults;
+            :frame = nextFrame;
+            
+            note right: Handle Frame Replacement
+            if (framePage[frame] != -1?) then (Yes: Frame in use)
+                :Invalidate oldPage in pageTable;
+            else (No: Frame empty)
+            endif
+            
+            :Read 256 bytes from BACKING_STORE.bin
+            Copy to ram[frame * PAGE_SIZE];
+            
+            :pageTable[page] = frame;
+            :framePage[frame] = page;
+            :nextFrame = (nextFrame + 1) % FRAME_COUNT;
+        endif
+        
+        :Update TLB with new (page, frame) pair
+        using replaceTLBEntry() or addToTLB();
+    endif
+    
+    :Calculate **Physical Address** (frame * PAGE_SIZE + offset);
+    :Read value from ram[physicalAddress];
+    :Print Virtual Address, Physical Address, and Value;
+
+endwhile (EOF)
+
+:Print Total Addresses, Page Faults, and TLB Hits;
+:Clean up memory and close files;
+
+stop
+@enduml
