@@ -56,3 +56,30 @@ Virtual address: 12107 Physical address = 6475 Value=-46
 Total addresses = 1000
 Page_faults = 538
 TLB Hits = 54
+
+
+## workflow
+![alt text](image-2.png)
+
+
+## uml
+@startuml
+start
+
+:Initialize Tables & Files;
+
+while (More Addresses?) is (yes)
+    :Get Logical Address;
+    :Check TLB & Page Table;
+    
+    if (Not in Memory?) then (Page Fault)
+        :Load Page from Disk to RAM;
+    endif
+    
+    :Convert to Physical Address;
+    :Print Result;
+endwhile (no)
+
+:Print Stats & Close;
+stop
+@enduml

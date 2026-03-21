@@ -1,38 +1,20 @@
 @startuml
-skinparam conditionStyle diamond
-
 start
-:Step 3: Open files and initialize tables;
-:Initialize Page Table, TLB, and RAM;
 
-while (More addresses in addresses.txt?) is (yes)
-  :Step 4: Read Logical Address;
-  :Extract **Page** and **Offset**;
-  
-  if (Is Page in TLB?) then (Hit)
-    :Get Frame from TLB;
-    :Increment TLB Hits;
-  else (Miss)
-    if (Is Page in Page Table?) then (Hit)
-      :Get Frame from Page Table;
-    else (Fault)
-      :Increment Page Faults;
-      :Step 5: Handle Page Fault;
-      :Read 256 bytes from **Backing Store**;
-      :Copy to next available **RAM** Frame;
-      :Update Page Table and Frame Map;
-      :Update nextFrame index (FIFO/Circular);
+:Initialize Tables & Files;
+
+while (More Addresses?) is (yes)
+    :Get Logical Address;
+    :Check TLB & Page Table;
+    
+    if (Not in Memory?) then (Page Fault)
+        :Load Page from Disk to RAM;
     endif
-    :Update TLB with new Page/Frame;
-  endif
-
-  :Step 6: Calculate Physical Address
-  (Frame * 256) + Offset;
-  :Read Value from RAM;
-  :Print Result;
+    
+    :Convert to Physical Address;
+    :Print Result;
 endwhile (no)
 
-:Step 7: Print Total Stats;
-:Clean up (munmap, close files);
+:Print Stats & Close;
 stop
 @enduml
