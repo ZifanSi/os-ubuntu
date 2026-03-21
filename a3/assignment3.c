@@ -21,6 +21,7 @@ typedef struct {
     int valid;
 } TLBItem;
 
+/* Step 1: search page in TLB */
 int findInTLB(TLBItem tlb[], int page) {
     int i;
     for (i = 0; i < TLB_COUNT; i++) {
@@ -31,6 +32,7 @@ int findInTLB(TLBItem tlb[], int page) {
     return -1;
 }
 
+/* Step 2: add/update TLB entry */
 void addToTLB(TLBItem tlb[], int page, int frame, int *tlbPos) {
     tlb[*tlbPos].page = page;
     tlb[*tlbPos].frame = frame;
@@ -69,6 +71,7 @@ int main(void) {
     char line[64];
     int i;
 
+    /* Step 3: open files and initialize tables */
     addressFile = fopen("addresses.txt", "r");
     if (addressFile == NULL) {
         perror("addresses.txt");
@@ -104,6 +107,7 @@ int main(void) {
         tlb[i].valid = 0;
     }
 
+    /* Step 4: read each logical address and split into page + offset */
     while (fgets(line, sizeof(line), addressFile) != NULL) {
         int logicalAddress;
         int page;
@@ -117,6 +121,7 @@ int main(void) {
         page = logicalAddress >> PAGE_BITS;
         offset = logicalAddress & OFFSET_MASK;
 
+        /* Step 5: check TLB, then page table, then handle page fault if needed */
         frame = findInTLB(tlb, page);
 
         if (frame != -1) {
@@ -146,16 +151,23 @@ int main(void) {
 
                 if (oldPage != -1) {
                     if (!replaceTLBEntry(tlb, oldPage, page, frame)) {
-                        addToTLB(tlb, page, frame, &nextTLB);
+                        if (findInTLB(tlb, page) == -1) {
+                            addToTLB(tlb, page, frame, &nextTLB);
+                        }
                     }
                 } else {
-                    addToTLB(tlb, page, frame, &nextTLB);
+                    if (findInTLB(tlb, page) == -1) {
+                        addToTLB(tlb, page, frame, &nextTLB);
+                    }
                 }
             } else {
-                addToTLB(tlb, page, frame, &nextTLB);
+                if (findInTLB(tlb, page) == -1) {
+                    addToTLB(tlb, page, frame, &nextTLB);
+                }
             }
         }
 
+        /* Step 6: build physical address, print value, and count stats */
         physicalAddress = frame * PAGE_SIZE + offset;
         value = ram[physicalAddress];
 
@@ -165,6 +177,7 @@ int main(void) {
         total++;
     }
 
+    /* Step 7: print final results and clean up */
     printf("Total addresses = %d\n", total);
     printf("Page_faults = %d\n", faults);
     printf("TLB Hits = %d\n", hits);
